@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 from pathlib import Path
 
 from sound import ButtonSound
@@ -48,7 +49,7 @@ def main() -> None:
 
         if game_over:
             invalid_move_sound.play()
-            print("Game over! Please restart the game to play again.")
+            messagebox.showinfo("Game Over", "Game over! Please restart the game to play again.")
             return
 
         if buttons[index]["text"] == "": # Check if the button is not already clicked
@@ -56,14 +57,15 @@ def main() -> None:
             buttons[index]["text"] = current_player  # Set the button text to the current player
 
             # Check if there is a winner after the move
-            if check_winner():  
-                print(f"Winner is {current_player}!")  # Temporary output to console
+            if check_winner():
+                messagebox.showinfo("Game Over", f"Winner is {current_player}!")
+                # print(f"Winner is {current_player}!")  # Temporary output to console
                 game_over = True
                 return
 
             # Check for a draw (if all buttons are filled and there is no winner)
             if all(button["text"] != "" for button in buttons):
-                print("Draw!")
+                messagebox.showinfo("Game Over", "It's a draw!")
                 game_over = True
                 return
 
