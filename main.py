@@ -78,6 +78,15 @@ def main() -> None:
             invalid_move_sound.play()
             print("Button already clicked!")
 
+    # Function to reset the game
+    def reset_game():
+        global current_player
+        global game_over
+        current_player = "X"
+        game_over = False
+        for button in buttons:
+            button.config(text="", bg=default_button_bg)
+
     # Create 9 buttons for the tic-tac-toe grid
     for i in range(9):  # Create 9 buttons (from 0 to 8)
         button = tk.Button(
@@ -90,6 +99,17 @@ def main() -> None:
         )
         button.grid(row=i//3, column=i%3)  # Place the button in the grid
         buttons.append(button)  # Add the button to the list
+
+    default_button_bg = buttons[0].cget("background")
+
+    # Create a reset button
+    reset_button = tk.Button(
+        root,
+        text="Reset",
+        font=("Arial", 20),
+        command=reset_game
+    )
+    reset_button.grid(row=3, column=0, columnspan=3, pady=10)  # Place the reset button below the grid
 
     # main loop starts here
     root.mainloop()
