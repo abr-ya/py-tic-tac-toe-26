@@ -14,7 +14,9 @@ def main() -> None:
 
     # Global variable to track the current player (X or O)
     global current_player
+    global game_over
     current_player = "X"
+    game_over = False
 
     # List to hold the button references
     buttons = []
@@ -22,12 +24,43 @@ def main() -> None:
     # Create an instance of ButtonSound and bind it to all button clicks
     button_sound = ButtonSound()
 
+    # Function to check for a winner
+    def check_winner():
+        winning_combinations = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],  # horizontal lines
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],  # vertical lines
+            [0, 4, 8], [2, 4, 6]              # diagonal lines
+        ]
+        for combo in winning_combinations:
+            a, b, c = combo
+            if buttons[a]["text"] == buttons[b]["text"] == buttons[c]["text"] != "":
+                return True
+        return False
+
     # Function to handle button clicks
     def on_click(index):
         global current_player
+        global game_over
+
+        if game_over:
+            print("Game over! Please restart the game to play again.")
+            return
+
         if buttons[index]["text"] == "": # Check if the button is not already clicked
             button_sound.play()
             buttons[index]["text"] = current_player  # Set the button text to the current player
+
+            # Check if there is a winner after the move
+            if check_winner():  
+                print(f"Winner is {current_player}!")  # Temporary output to console
+                game_over = True
+                return
+
+            # Check for a draw (if all buttons are filled and there is no winner)
+            if all(button["text"] != "" for button in buttons):
+                print("Draw!")
+                game_over = True
+                return
 
             # Switch players
             if current_player == "X":
