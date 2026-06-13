@@ -23,6 +23,7 @@ def main() -> None:
 
     # Create an instance of ButtonSound and bind it to all button clicks
     button_sound = ButtonSound()
+    invalid_move_sound = ButtonSound(frequency=220, duration=0.16)
 
     # Function to check for a winner
     def check_winner():
@@ -34,6 +35,9 @@ def main() -> None:
         for combo in winning_combinations:
             a, b, c = combo
             if buttons[a]["text"] == buttons[b]["text"] == buttons[c]["text"] != "":
+                buttons[a].config(bg="lightgreen")
+                buttons[b].config(bg="lightgreen")
+                buttons[c].config(bg="lightgreen")
                 return True
         return False
 
@@ -43,6 +47,7 @@ def main() -> None:
         global game_over
 
         if game_over:
+            invalid_move_sound.play()
             print("Game over! Please restart the game to play again.")
             return
 
@@ -68,6 +73,7 @@ def main() -> None:
             else:
                 current_player = "X"
         else:
+            invalid_move_sound.play()
             print("Button already clicked!")
 
     # Create 9 buttons for the tic-tac-toe grid
